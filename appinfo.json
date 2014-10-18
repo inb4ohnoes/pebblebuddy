@@ -9,13 +9,8 @@
     "resources": {
         "media": [
             {
-                "file": "images/snow.png",
-                "name": "IMAGE_SNOW",
-                "type": "png"
-            },
-            {
-                "file": "images/cloud.png",
-                "name": "IMAGE_CLOUD",
+                "file": "images/sun.png",
+                "name": "IMAGE_SUN",
                 "type": "png"
             },
             {
@@ -24,8 +19,13 @@
                 "type": "png"
             },
             {
-                "file": "images/sun.png",
-                "name": "IMAGE_SUN",
+                "file": "images/cloud.png",
+                "name": "IMAGE_CLOUD",
+                "type": "png"
+            },
+            {
+                "file": "images/snow.png",
+                "name": "IMAGE_SNOW",
                 "type": "png"
             }
         ]
@@ -35,6 +35,6 @@
     "versionCode": 2,
     "versionLabel": "1.0",
     "watchapp": {
-        "watchface": false
+        "watchface": true
     }
 }

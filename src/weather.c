@@ -71,12 +71,12 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   
-  icon_layer = bitmap_layer_create(GRect(32, 20, 80, 80));
+  icon_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
   layer_add_child(window_layer, bitmap_layer_get_layer(icon_layer));
-
+  
   temperature_layer = text_layer_create(GRect(0, 100, 144, 68));
   text_layer_set_text_color(temperature_layer, GColorWhite);
-  text_layer_set_background_color(temperature_layer, GColorClear);
+  text_layer_set_background_color(temperature_layer, GColorBlack);
   text_layer_set_font(temperature_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
   text_layer_set_text_alignment(temperature_layer, GTextAlignmentCenter);
   text_layer_set_text(temperature_layer, temperature);
@@ -116,7 +116,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 }
 static void init() {
   window = window_create();
-  window_set_background_color(window, GColorWhite);
+  window_set_background_color(window, GColorBlack);
   window_set_fullscreen(window, true);
   window_set_window_handlers(window, (WindowHandlers) {
     .load = window_load,
