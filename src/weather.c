@@ -1,8 +1,8 @@
-#include "pebble.h"
 #include <pebble.h>
 #include <stdlib.h>
   
 static Window *window;
+static TextLayer *s_time_layer;
 
 static TextLayer *temperature_layer;
 static char temperature[16];
@@ -13,18 +13,24 @@ static GBitmap *icon_bitmap = NULL;
 static AppSync sync;
 static uint8_t sync_buffer[32];
 
+static GBitmap *image_bitmap;
+static BitmapLayer *image_layer;
+static AppTimer *timer;
+static int count = 1;
+static const int delta = 500;
+
+
 enum WeatherKey {
   WEATHER_ICON_KEY = 0x0,         // TUPLE_INT
   WEATHER_TEMPERATURE_KEY = 0x1,  // TUPLE_CSTRING
 };
 
 static uint32_t WEATHER_ICONS[] = {
-  RESOURCE_ID_IMAGE_SUN,
-  RESOURCE_ID_IMAGE_CLOUD,
-  RESOURCE_ID_IMAGE_RAIN,
-  RESOURCE_ID_IMAGE_SNOW
+  RESOURCE_ID_sun1,
+  RESOURCE_ID_cloud1,
+  RESOURCE_ID_rain1,
+  RESOURCE_ID_snow1
 };
-static TextLayer *s_time_layer;
 static void update_time() {
   // Get a tm structure
   time_t temp = time(NULL); 
@@ -68,6 +74,16 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
   }
 }
 
+static void timer_callback(void *data) {
+  image_bitmap = gbitmap_create_with_resource(count == 1 ? RESOURCE_ID_rain1 : RESOURCE_ID_rain2);
+  count *=  -1;
+  image_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
+  bitmap_layer_set_bitmap(image_layer, image_bitmap);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(image_layer));
+  
+  timer = app_timer_register(delta, (AppTimerCallback) timer_callback, NULL);
+}
+
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   
@@ -103,6 +119,7 @@ static void window_load(Window *window) {
 
 static void window_unload(Window *window) {
   app_sync_deinit(&sync);
+  app_timer_cancel(timer);
 
   if (icon_bitmap) {
     gbitmap_destroy(icon_bitmap);
@@ -132,6 +149,8 @@ static void init() {
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
   window_stack_push(window, animated);
   
+  timer = app_timer_register(delta, (AppTimerCallback) timer_callback, NULL);
+  
   //window_stack_push(s_main_window, true);
   update_time();
 }
@@ -139,6 +158,8 @@ static void init() {
 
 static void deinit() {
   window_destroy(window);
+  gbitmap_destroy(image_bitmap);
+  bitmap_layer_destroy(image_layer);
 }
 
 int main(void) {
