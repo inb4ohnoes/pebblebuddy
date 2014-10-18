@@ -1,0 +1,40 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "The Peeps",
+    "longName": "Pebble Buddy",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/snow.png",
+                "name": "IMAGE_SNOW",
+                "type": "png"
+            },
+            {
+                "file": "images/cloud.png",
+                "name": "IMAGE_CLOUD",
+                "type": "png"
+            },
+            {
+                "file": "images/rain.png",
+                "name": "IMAGE_RAIN",
+                "type": "png"
+            },
+            {
+                "file": "images/sun.png",
+                "name": "IMAGE_SUN",
+                "type": "png"
+            }
+        ]
+    },
+    "shortName": "Pebble Buddy",
+    "uuid": "28AF3DC7-E40D-490F-BEF2-29548C8B0600",
+    "versionCode": 2,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
