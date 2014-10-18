@@ -19,7 +19,7 @@ static AppTimer *timer;
 static int count = 1;
 static const int delta = 500;
 
-static int special = 0;
+static int special = 20;
 static int specialActionCount = 1;
 
 enum WeatherKey {
@@ -76,12 +76,12 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
     frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow1);
     frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow2);
   }
-  else if (weather_code / 10 == 20/*eat 20*/) {
+  else if (weather_code / 100 == 20/*eat 20*/) {
     frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_eat1);
     frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_eat2);
     special = weather_code % 100;
   }
-  else if (weather_code / 10 == 21/*dance 21*/) {
+  else if (weather_code / 100 == 21/*dance 21*/) {
     frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_dance1);
     frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_dance2);
     special = weather_code % 100;
@@ -162,6 +162,7 @@ static void window_load(Window *window) {
   
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
   
+  weather_code = 2020;//testing
   if (weather_code == 1/*cloudy 1 */) {
     frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);
     frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2);
@@ -177,6 +178,14 @@ static void window_load(Window *window) {
   else if (weather_code == 3/*snowy 3*/) {
     frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow1);
     frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow2);
+  }
+  else if (weather_code / 100 == 20/*eating 20*/) {
+    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_eat1);
+    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_eat2);
+  }
+  else if (weather_code / 100 == 21/*dancing 21*/) {
+    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_dance1);
+    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_dance2);
   }
   
  // cloud1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);

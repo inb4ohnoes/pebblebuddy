@@ -9,73 +9,8 @@
     "resources": {
         "media": [
             {
-                "file": "images/Dance2.png",
-                "name": "dance2",
-                "type": "png"
-            },
-            {
-                "file": "images/Dance1.png",
-                "name": "dance1",
-                "type": "png"
-            },
-            {
-                "file": "images/Eat2.png",
-                "name": "eat2",
-                "type": "png"
-            },
-            {
-                "file": "images/Eat1.png",
-                "name": "eat1",
-                "type": "png"
-            },
-            {
-                "file": "images/Sun2.png",
-                "name": "sun2",
-                "type": "png"
-            },
-            {
-                "file": "images/Sun1.png",
-                "name": "sun1",
-                "type": "png"
-            },
-            {
-                "file": "images/Snow2.png",
-                "name": "snow2",
-                "type": "png"
-            },
-            {
-                "file": "images/Snow1.png",
-                "name": "snow1",
-                "type": "png"
-            },
-            {
-                "file": "images/Rain2.png",
-                "name": "rain2",
-                "type": "png"
-            },
-            {
-                "file": "images/Rain1.png",
-                "name": "rain1",
-                "type": "png"
-            },
-            {
-                "file": "images/Cloud2.png",
-                "name": "cloud2",
-                "type": "png"
-            },
-            {
-                "file": "images/Cloud1.png",
-                "name": "cloud1",
-                "type": "png"
-            },
-            {
-                "file": "images/sun.png",
-                "name": "IMAGE_SUN",
-                "type": "png"
-            },
-            {
-                "file": "images/rain.png",
-                "name": "IMAGE_RAIN",
+                "file": "images/snow.png",
+                "name": "IMAGE_SNOW",
                 "type": "png"
             },
             {
@@ -84,8 +19,73 @@
                 "type": "png"
             },
             {
-                "file": "images/snow.png",
-                "name": "IMAGE_SNOW",
+                "file": "images/rain.png",
+                "name": "IMAGE_RAIN",
+                "type": "png"
+            },
+            {
+                "file": "images/sun.png",
+                "name": "IMAGE_SUN",
+                "type": "png"
+            },
+            {
+                "file": "images/Cloud1.png",
+                "name": "cloud1",
+                "type": "png"
+            },
+            {
+                "file": "images/Cloud2.png",
+                "name": "cloud2",
+                "type": "png"
+            },
+            {
+                "file": "images/Rain1.png",
+                "name": "rain1",
+                "type": "png"
+            },
+            {
+                "file": "images/Rain2.png",
+                "name": "rain2",
+                "type": "png"
+            },
+            {
+                "file": "images/Snow1.png",
+                "name": "snow1",
+                "type": "png"
+            },
+            {
+                "file": "images/Snow2.png",
+                "name": "snow2",
+                "type": "png"
+            },
+            {
+                "file": "images/Sun1.png",
+                "name": "sun1",
+                "type": "png"
+            },
+            {
+                "file": "images/Sun2.png",
+                "name": "sun2",
+                "type": "png"
+            },
+            {
+                "file": "images/Eat1.png",
+                "name": "eat1",
+                "type": "png"
+            },
+            {
+                "file": "images/Eat2.png",
+                "name": "eat2",
+                "type": "png"
+            },
+            {
+                "file": "images/Dance1.png",
+                "name": "dance1",
+                "type": "png"
+            },
+            {
+                "file": "images/Dance2.png",
+                "name": "dance2",
                 "type": "png"
             }
         ]
