@@ -13,8 +13,8 @@ static GBitmap *icon_bitmap = NULL;
 static AppSync sync;
 static uint8_t sync_buffer[32];
 
-static GBitmap *image_bitmap;
-static BitmapLayer *image_layer;
+static GBitmap *cloud1_bitmap, *cloud2_bitmap;
+static BitmapLayer *cloud1_layer, *cloud2_layer;
 static AppTimer *timer;
 static int count = 1;
 static const int delta = 500;
@@ -75,11 +75,15 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
 }
 
 static void timer_callback(void *data) {
-  image_bitmap = gbitmap_create_with_resource(count == 1 ? RESOURCE_ID_rain1 : RESOURCE_ID_rain2);
-  count *=  -1;
-  image_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
-  bitmap_layer_set_bitmap(image_layer, image_bitmap);
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(image_layer));
+  if ( count == 1 ) {
+    layer_remove_from_parent(bitmap_layer_get_layer(cloud2_layer));
+    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(cloud1_layer));
+  }
+  else {
+    layer_remove_from_parent(bitmap_layer_get_layer(cloud1_layer));
+    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(cloud2_layer));
+  }
+  count *= -1;
   
   timer = app_timer_register(delta, (AppTimerCallback) timer_callback, NULL);
 }
@@ -115,6 +119,17 @@ static void window_load(Window *window) {
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
   
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
+  
+  cloud1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);
+  cloud2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2);
+  
+  cloud1_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
+  cloud2_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
+  bitmap_layer_set_bitmap(cloud1_layer, cloud1_bitmap);
+  bitmap_layer_set_bitmap(cloud2_layer, cloud2_bitmap);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(cloud1_layer));
+  
+  timer = app_timer_register(delta, (AppTimerCallback) timer_callback, NULL);
 }
 
 static void window_unload(Window *window) {
@@ -149,8 +164,6 @@ static void init() {
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
   window_stack_push(window, animated);
   
-  timer = app_timer_register(delta, (AppTimerCallback) timer_callback, NULL);
-  
   //window_stack_push(s_main_window, true);
   update_time();
 }
@@ -158,8 +171,10 @@ static void init() {
 
 static void deinit() {
   window_destroy(window);
-  gbitmap_destroy(image_bitmap);
-  bitmap_layer_destroy(image_layer);
+  gbitmap_destroy(cloud1_bitmap);
+  bitmap_layer_destroy(cloud1_layer);
+  gbitmap_destroy(cloud2_bitmap);
+  bitmap_layer_destroy(cloud2_layer);
 }
 
 int main(void) {
