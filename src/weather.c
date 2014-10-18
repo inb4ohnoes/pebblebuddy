@@ -1,7 +1,6 @@
 #include "pebble.h"
 #include <pebble.h>
 #include <stdlib.h>
-#include "time.c"
   
 static Window *window;
 
@@ -71,7 +70,7 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
 
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
-
+  
   icon_layer = bitmap_layer_create(GRect(32, 20, 80, 80));
   layer_add_child(window_layer, bitmap_layer_get_layer(icon_layer));
 
@@ -91,8 +90,8 @@ static void window_load(Window *window) {
 
   layer_add_child(window_layer, text_layer_get_layer(temperature_layer));
   
-  s_time_layer = text_layer_create(GRect(-2, 5,  155, 50));
-  text_layer_set_background_color(s_time_layer, GColorClear);
+  s_time_layer = text_layer_create(GRect(0, 0, 150, 40));
+  text_layer_set_background_color(s_time_layer, GColorBlack);
   text_layer_set_text_color(s_time_layer, GColorWhite);
   text_layer_set_text(s_time_layer, "00:00:00");
   
@@ -117,7 +116,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 }
 static void init() {
   window = window_create();
-  window_set_background_color(window, GColorBlack);
+  window_set_background_color(window, GColorWhite);
   window_set_fullscreen(window, true);
   window_set_window_handlers(window, (WindowHandlers) {
     .load = window_load,

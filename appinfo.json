@@ -9,13 +9,8 @@
     "resources": {
         "media": [
             {
-                "file": "images/sun.png",
-                "name": "IMAGE_SUN",
-                "type": "png"
-            },
-            {
-                "file": "images/rain.png",
-                "name": "IMAGE_RAIN",
+                "file": "images/snow.png",
+                "name": "IMAGE_SNOW",
                 "type": "png"
             },
             {
@@ -24,8 +19,13 @@
                 "type": "png"
             },
             {
-                "file": "images/snow.png",
-                "name": "IMAGE_SNOW",
+                "file": "images/rain.png",
+                "name": "IMAGE_RAIN",
+                "type": "png"
+            },
+            {
+                "file": "images/sun.png",
+                "name": "IMAGE_SUN",
                 "type": "png"
             }
         ]
