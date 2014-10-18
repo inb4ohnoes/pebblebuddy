@@ -19,6 +19,8 @@ static AppTimer *timer;
 static int count = 1;
 static const int delta = 500;
 
+static int special = 0;
+static int specialActionCount = 1;
 
 enum WeatherKey {
   WEATHER_ICON_KEY = 0x0,         // TUPLE_INT
@@ -74,6 +76,16 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
     frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow1);
     frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow2);
   }
+  else if (weather_code / 10 == 20/*eat 20*/) {
+    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_eat1);
+    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_eat2);
+    special = weather_code % 100;
+  }
+  else if (weather_code / 10 == 21/*dance 21*/) {
+    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_dance1);
+    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_dance2);
+    special = weather_code % 100;
+  }
   
  // cloud1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);
  // cloud2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2);
@@ -104,15 +116,16 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
 }
 
 static void timer_callback(void *data) {
-  if ( count == 1 ) {
-    layer_remove_from_parent(bitmap_layer_get_layer(frame2_layer));
-    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(frame1_layer));
+  if ( special > 0 ) {
+    layer_remove_from_parent(bitmap_layer_get_layer(specialActionCount == 1 ? frame2_layer : frame1_layer));
+    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(specialActionCount == 1 ? frame1_layer : frame2_layer));
+    specialActionCount *= -1;
+    special -= 1;
+  } else {
+    layer_remove_from_parent(bitmap_layer_get_layer(count == 1 ? frame2_layer : frame1_layer));
+    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(count == 1 ? frame1_layer : frame2_layer));
+    count *= -1;
   }
-  else {
-    layer_remove_from_parent(bitmap_layer_get_layer(frame1_layer));
-    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(frame2_layer));
-  }
-  count *= -1;
   
   timer = app_timer_register(delta, (AppTimerCallback) timer_callback, NULL);
 }
