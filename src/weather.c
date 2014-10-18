@@ -3,7 +3,7 @@
   
 static Window *window;
 static TextLayer *s_time_layer;
-
+static uint32_t weather_code;
 static TextLayer *temperature_layer;
 static char temperature[16];
 
@@ -13,8 +13,8 @@ static GBitmap *icon_bitmap = NULL;
 static AppSync sync;
 static uint8_t sync_buffer[32];
 
-static GBitmap *cloud1_bitmap, *cloud2_bitmap;
-static BitmapLayer *cloud1_layer, *cloud2_layer;
+static GBitmap *frame1_bitmap, *frame2_bitmap;
+static BitmapLayer *frame1_layer, *frame2_layer;
 static AppTimer *timer;
 static int count = 1;
 static const int delta = 500;
@@ -57,6 +57,7 @@ static void sync_error_callback(DictionaryResult dict_error, AppMessageResult ap
 }
 
 static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tuple, const Tuple* old_tuple, void* context) {
+  weather_code = key;
   switch (key) {
     case WEATHER_ICON_KEY:
       if (icon_bitmap) {
@@ -76,12 +77,12 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
 
 static void timer_callback(void *data) {
   if ( count == 1 ) {
-    layer_remove_from_parent(bitmap_layer_get_layer(cloud2_layer));
-    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(cloud1_layer));
+    layer_remove_from_parent(bitmap_layer_get_layer(frame2_layer));
+    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(frame1_layer));
   }
   else {
-    layer_remove_from_parent(bitmap_layer_get_layer(cloud1_layer));
-    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(cloud2_layer));
+    layer_remove_from_parent(bitmap_layer_get_layer(frame1_layer));
+    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(frame2_layer));
   }
   count *= -1;
   
@@ -94,7 +95,7 @@ static void window_load(Window *window) {
   icon_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
   layer_add_child(window_layer, bitmap_layer_get_layer(icon_layer));
   
-  temperature_layer = text_layer_create(GRect(0, 100, 144, 68));
+  temperature_layer = text_layer_create(GRect(0, 120, 144, 68));
   text_layer_set_text_color(temperature_layer, GColorWhite);
   text_layer_set_background_color(temperature_layer, GColorBlack);
   text_layer_set_font(temperature_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
@@ -120,14 +121,30 @@ static void window_load(Window *window) {
   
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
   
-  cloud1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);
-  cloud2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2);
+  if (weather_code == 1/*cloudy 1 */) {
+    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);
+    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2);
+  }
+  else if (weather_code == 2/*rainy 2 */) {
+    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_rain1);
+    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_rain2);
+  }
+  else if (weather_code == 0 /*sunny 0*/) {
+    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_sun1);
+    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_sun2);
+  }
+  else if (weather_code == 3/*snowy 3*/) {
+    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow1);
+    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow2);
+  }
+ // cloud1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);
+ // cloud2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2);
   
-  cloud1_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
-  cloud2_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
-  bitmap_layer_set_bitmap(cloud1_layer, cloud1_bitmap);
-  bitmap_layer_set_bitmap(cloud2_layer, cloud2_bitmap);
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(cloud1_layer));
+  frame1_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
+  frame2_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
+  bitmap_layer_set_bitmap(frame1_layer, frame1_bitmap);
+  bitmap_layer_set_bitmap(frame2_layer, frame2_bitmap);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(frame1_layer));
   
   timer = app_timer_register(delta, (AppTimerCallback) timer_callback, NULL);
 }
@@ -171,10 +188,10 @@ static void init() {
 
 static void deinit() {
   window_destroy(window);
-  gbitmap_destroy(cloud1_bitmap);
-  bitmap_layer_destroy(cloud1_layer);
-  gbitmap_destroy(cloud2_bitmap);
-  bitmap_layer_destroy(cloud2_layer);
+  gbitmap_destroy(frame1_bitmap);
+  bitmap_layer_destroy(frame1_layer);
+  gbitmap_destroy(frame2_bitmap);
+  bitmap_layer_destroy(frame2_layer);
 }
 
 int main(void) {
