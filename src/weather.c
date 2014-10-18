@@ -58,6 +58,33 @@ static void sync_error_callback(DictionaryResult dict_error, AppMessageResult ap
 
 static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tuple, const Tuple* old_tuple, void* context) {
   weather_code = key;
+  if (weather_code == 1/*cloudy 1 */) {
+    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);
+    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2);
+  }
+  else if (weather_code == 2/*rainy 2 */) {
+    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_rain1);
+    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_rain2);
+  }
+  else if (weather_code == 0 /*sunny 0*/) {
+    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_sun1);
+    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_sun2);
+  }
+  else if (weather_code == 3/*snowy 3*/) {
+    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow1);
+    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow2);
+  }
+  
+ // cloud1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);
+ // cloud2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2);
+  
+  frame1_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
+  frame2_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
+  bitmap_layer_set_bitmap(frame1_layer, frame1_bitmap);
+  bitmap_layer_set_bitmap(frame2_layer, frame2_bitmap);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(frame1_layer));
+  
+  //timer = app_timer_register(delta, (AppTimerCallback) timer_callback, NULL);
   switch (key) {
     case WEATHER_ICON_KEY:
       if (icon_bitmap) {
@@ -66,6 +93,7 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
 
       icon_bitmap = gbitmap_create_with_resource(WEATHER_ICONS[new_tuple->value->uint8]);
       bitmap_layer_set_bitmap(icon_layer, icon_bitmap);
+    
       break;
 
     case WEATHER_TEMPERATURE_KEY:
@@ -137,6 +165,7 @@ static void window_load(Window *window) {
     frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow1);
     frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow2);
   }
+  
  // cloud1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);
  // cloud2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2);
   
