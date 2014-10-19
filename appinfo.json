@@ -9,93 +9,38 @@
     "resources": {
         "media": [
             {
-                "file": "images/inv_valentines2.png",
-                "name": "val2",
+                "file": "images/Bench2.png",
+                "name": "bench2",
                 "type": "png"
             },
             {
-                "file": "images/inv_valentines1.png",
-                "name": "val1",
+                "file": "images/Bench1.png",
+                "name": "bench1",
                 "type": "png"
             },
             {
-                "file": "images/inv_xmas2.png",
-                "name": "xmas2",
+                "file": "images/Obection2.png",
+                "name": "objection2",
                 "type": "png"
             },
             {
-                "file": "images/inv_xmas1.png",
-                "name": "xmas1",
+                "file": "images/Objection.png",
+                "name": "objection1",
                 "type": "png"
             },
             {
-                "file": "images/snow.png",
-                "name": "IMAGE_SNOW",
+                "file": "images/Hockey2.png",
+                "name": "hockey2",
                 "type": "png"
             },
             {
-                "file": "images/cloud.png",
-                "name": "IMAGE_CLOUD",
+                "file": "images/Hockey1.png",
+                "name": "hockey1",
                 "type": "png"
             },
             {
-                "file": "images/rain.png",
-                "name": "IMAGE_RAIN",
-                "type": "png"
-            },
-            {
-                "file": "images/sun.png",
-                "name": "IMAGE_SUN",
-                "type": "png"
-            },
-            {
-                "file": "images/Cloud1.png",
-                "name": "cloud1",
-                "type": "png"
-            },
-            {
-                "file": "images/Cloud2.png",
-                "name": "cloud2",
-                "type": "png"
-            },
-            {
-                "file": "images/Rain1.png",
-                "name": "rain1",
-                "type": "png"
-            },
-            {
-                "file": "images/Rain2.png",
-                "name": "rain2",
-                "type": "png"
-            },
-            {
-                "file": "images/Snow1.png",
-                "name": "snow1",
-                "type": "png"
-            },
-            {
-                "file": "images/Snow2.png",
-                "name": "snow2",
-                "type": "png"
-            },
-            {
-                "file": "images/Sun1.png",
-                "name": "sun1",
-                "type": "png"
-            },
-            {
-                "file": "images/Sun2.png",
-                "name": "sun2",
-                "type": "png"
-            },
-            {
-                "file": "images/Eat1.png",
-                "name": "eat1",
-                "type": "png"
-            },
-            {
-                "file": "images/Eat2.png",
-                "name": "eat2",
+                "file": "images/Dance2.png",
+                "name": "dance2",
                 "type": "png"
             },
             {
@@ -104,8 +49,93 @@
                 "type": "png"
             },
             {
-                "file": "images/Dance2.png",
-                "name": "dance2",
+                "file": "images/Eat2.png",
+                "name": "eat2",
+                "type": "png"
+            },
+            {
+                "file": "images/Eat1.png",
+                "name": "eat1",
+                "type": "png"
+            },
+            {
+                "file": "images/Sun2.png",
+                "name": "sun2",
+                "type": "png"
+            },
+            {
+                "file": "images/Sun1.png",
+                "name": "sun1",
+                "type": "png"
+            },
+            {
+                "file": "images/Snow2.png",
+                "name": "snow2",
+                "type": "png"
+            },
+            {
+                "file": "images/Snow1.png",
+                "name": "snow1",
+                "type": "png"
+            },
+            {
+                "file": "images/Rain2.png",
+                "name": "rain2",
+                "type": "png"
+            },
+            {
+                "file": "images/Rain1.png",
+                "name": "rain1",
+                "type": "png"
+            },
+            {
+                "file": "images/Cloud2.png",
+                "name": "cloud2",
+                "type": "png"
+            },
+            {
+                "file": "images/Cloud1.png",
+                "name": "cloud1",
+                "type": "png"
+            },
+            {
+                "file": "images/sun.png",
+                "name": "IMAGE_SUN",
+                "type": "png"
+            },
+            {
+                "file": "images/rain.png",
+                "name": "IMAGE_RAIN",
+                "type": "png"
+            },
+            {
+                "file": "images/cloud.png",
+                "name": "IMAGE_CLOUD",
+                "type": "png"
+            },
+            {
+                "file": "images/snow.png",
+                "name": "IMAGE_SNOW",
+                "type": "png"
+            },
+            {
+                "file": "images/inv_xmas1.png",
+                "name": "xmas1",
+                "type": "png"
+            },
+            {
+                "file": "images/inv_xmas2.png",
+                "name": "xmas2",
+                "type": "png"
+            },
+            {
+                "file": "images/inv_valentines1.png",
+                "name": "val1",
+                "type": "png"
+            },
+            {
+                "file": "images/inv_valentines2.png",
+                "name": "val2",
                 "type": "png"
             }
         ]
