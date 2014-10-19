@@ -18,8 +18,9 @@ static BitmapLayer *frame1_layer, *frame2_layer;
 static AppTimer *timer;
 static int count = 1;
 static const int delta = 500;
+static int current = 1;
 
-static int special = 20;
+static int special = 0;
 static int specialActionCount = 1;
 
 enum WeatherKey {
@@ -58,23 +59,36 @@ static void sync_error_callback(DictionaryResult dict_error, AppMessageResult ap
   APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Sync Error: %d", app_message_error);
 }
 
-static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tuple, const Tuple* old_tuple, void* context) {
+static void changeWeatherCode(const uint32_t key) {
   weather_code = key;
-  if (weather_code == 1/*cloudy 1 */) {
-    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);
-    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2);
+  
+  if (weather_code == 0 /*sunny 0*/) {
+    if ( special == 0 ) {
+      frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_sun1); 
+      frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_sun2); 
+    }
+    current = weather_code;
+  }
+  else if (weather_code == 1/*cloudy 1 */) {
+    if ( special == 0 ) {
+      frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1); 
+      frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2); 
+    }
+    current = weather_code;
   }
   else if (weather_code == 2/*rainy 2 */) {
-    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_rain1);
-    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_rain2);
-  }
-  else if (weather_code == 0 /*sunny 0*/) {
-    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_sun1);
-    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_sun2);
+    if ( special == 0 ) {
+      frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_rain1); 
+      frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_rain2); 
+    }
+    current = weather_code;
   }
   else if (weather_code == 3/*snowy 3*/) {
-    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow1);
-    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow2);
+    if ( special == 0 ) {
+      frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow1); 
+      frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow2); 
+    }
+    current = weather_code;
   }
   else if (weather_code / 100 == 20/*eat 20*/) {
     frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_eat1);
@@ -87,14 +101,16 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
     special = weather_code % 100;
   }
   
- // cloud1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);
- // cloud2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2);
-  
   frame1_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
   frame2_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
   bitmap_layer_set_bitmap(frame1_layer, frame1_bitmap);
   bitmap_layer_set_bitmap(frame2_layer, frame2_bitmap);
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(frame1_layer));
+  count = 1; specialActionCount = 1;
+}
+
+static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tuple, const Tuple* old_tuple, void* context) {
+  changeWeatherCode(key);
   
   //timer = app_timer_register(delta, (AppTimerCallback) timer_callback, NULL);
   switch (key) {
@@ -117,13 +133,16 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
 
 static void timer_callback(void *data) {
   if ( special > 0 ) {
-    layer_remove_from_parent(bitmap_layer_get_layer(specialActionCount == 1 ? frame2_layer : frame1_layer));
-    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(specialActionCount == 1 ? frame1_layer : frame2_layer));
+    layer_remove_from_parent(bitmap_layer_get_layer(specialActionCount == 1 ? frame1_layer : frame2_layer));
+    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(specialActionCount == 1 ? frame2_layer : frame1_layer));
     specialActionCount *= -1;
     special -= 1;
+    if ( special == 0 ) {
+        changeWeatherCode(current);
+    }
   } else {
-    layer_remove_from_parent(bitmap_layer_get_layer(count == 1 ? frame2_layer : frame1_layer));
-    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(count == 1 ? frame1_layer : frame2_layer));
+    layer_remove_from_parent(bitmap_layer_get_layer(count == 1 ? frame1_layer : frame2_layer));
+    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(count == 1 ? frame2_layer : frame1_layer));
     count *= -1;
   }
   
@@ -162,40 +181,7 @@ static void window_load(Window *window) {
   
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
   
-  weather_code = 2020;//testing
-  if (weather_code == 1/*cloudy 1 */) {
-    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);
-    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2);
-  }
-  else if (weather_code == 2/*rainy 2 */) {
-    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_rain1);
-    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_rain2);
-  }
-  else if (weather_code == 0 /*sunny 0*/) {
-    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_sun1);
-    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_sun2);
-  }
-  else if (weather_code == 3/*snowy 3*/) {
-    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow1);
-    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_snow2);
-  }
-  else if (weather_code / 100 == 20/*eating 20*/) {
-    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_eat1);
-    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_eat2);
-  }
-  else if (weather_code / 100 == 21/*dancing 21*/) {
-    frame1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_dance1);
-    frame2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_dance2);
-  }
-  
- // cloud1_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud1);
- // cloud2_bitmap = gbitmap_create_with_resource(RESOURCE_ID_cloud2);
-  
-  frame1_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
-  frame2_layer = bitmap_layer_create(GRect(32, 35, 80, 80));
-  bitmap_layer_set_bitmap(frame1_layer, frame1_bitmap);
-  bitmap_layer_set_bitmap(frame2_layer, frame2_bitmap);
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(frame1_layer));
+  changeWeatherCode(2106);
   
   timer = app_timer_register(delta, (AppTimerCallback) timer_callback, NULL);
 }
